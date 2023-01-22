@@ -1,11 +1,8 @@
 <x-guest-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Blogs Listing') }}
-        </h2>
-    </x-slot>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <h1 class="text-6xl font-bold mb-6">Blogs</h1>
             <form method="get" action="{{ route('welcome') }}">
                 @csrf
                 <table class="mb-3 w-full">
@@ -51,8 +48,9 @@
                     @endforeach
                 </tbody>
             </table>
-
+            <div class="mt-3">
             {{ $blogs->withQueryString()->links() }}
+        </div>
         </div>
     </div>
 </x-guest-layout>
