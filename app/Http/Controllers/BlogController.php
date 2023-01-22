@@ -51,13 +51,23 @@ class BlogController extends Controller
         $validate = $request->validate([
             'title' => 'required',
             'content' => 'required',
+            'image' => 'required|image|mimes:png,jpg,jpeg|max:4096'
         ]);
+
+        $imageName = uniqid().'.'.$request->image->extension();
+
+        //public folder
+        $request->image->move(public_path("images"), $imageName);
+
+        //storage folder
+        //$request->image->storeAs('images', $imageName);
 
         // request is valid, now save the record
         $model = new Blog();
         $model->title = $request->title;
         $model->content = $request->content;
         $model->created_by = Auth::id();
+        $model->image = $imageName;
         $model->save();
         return redirect(route("blog.index"))->with("success","Blog Created");
     }
@@ -98,7 +108,21 @@ class BlogController extends Controller
             'content' => 'required',
         ]);
 
-        $blog->update($request->all());
+        if($request->image){
+            $imageName = uniqid().'.'.$request->image->extension();
+
+            //public folder
+            $request->image->move(public_path("images"), $imageName);
+
+            //storage folder
+            //$request->image->storeAs('images', $imageName);
+            $blog->image = $imageName;
+        }
+
+        $blog->title = $request->title;
+        $blog->content = $request->content;
+        $blog->save();
+        //$blog->update($request->all());
         return redirect()->route('blog.index')->with('success','Blog updated successfully');
     }
 

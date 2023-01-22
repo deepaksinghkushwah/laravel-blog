@@ -1,4 +1,5 @@
-<x-app-layout>
+<x-guest-layout>
+    <x-guest-navigation/>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Blog - ' . $blog->title) }}
@@ -13,6 +14,7 @@
                     {{nl2br($blog->content)}}
                 </p>
             </div>
+
         </div>
     </div>
-</x-app-layout>
+</x-guest-layout>

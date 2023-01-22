@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,7 +39,7 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/blogs/index', [BlogController::class, 'index'])->name('blog.index');
-    Route::get('/blogs/show/{blog}', [BlogController::class, 'show'])->name('blog.show');
+    Route::get('/blogs/show/{blog}', [BlogController::class,'show'])->name('blog.show');
 
     Route::get('/blogs/create', [BlogController::class, 'create'])->name('blog.create');
     Route::post('/blogs/create', [BlogController::class, 'store'])->name('blog.store');
@@ -48,3 +49,7 @@ Route::middleware([
 
     Route::delete('/blogs/delete/{blog}', [BlogController::class, 'destroy'])->name('blog.delete');
 });
+
+Route::get('/blogs/detail/{blog}', function(Blog $blog){
+    return view("blog-detail",['blog' => $blog]);
+})->name('blog.detail');

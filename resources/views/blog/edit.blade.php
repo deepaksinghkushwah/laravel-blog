@@ -6,7 +6,7 @@
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <form method="post" action="{{ route('blog.update',$blog->id) }}">
+            <form method="post" action="{{ route('blog.update',$blog->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method("PATCH")
                 @if ($errors->any())
@@ -28,6 +28,11 @@
                         <tr>
                             <td>
                                 <textarea class="w-full" name="content" id="" cols="30" rows="10" placeholder="Content">{{ $blog->content }}</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="w-full" type="file" name="image" id="image" placeholder="Select an image for blog">
                             </td>
                         </tr>
                         <tr>
