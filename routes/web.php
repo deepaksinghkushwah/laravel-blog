@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +17,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function (Request $request) {
+    $where = [];
+
+    if (trim($request->term) != '') {
+        $where[] = ["title", 'like', '%' . $request->term . '%'];
+    }
+
+    $blogs = DB::table("blogs")->where($where)->orderBy('id', 'DESC')->paginate(5);
+    return view('welcome',['blogs' =>$blogs]);
+})->name("welcome");
 
 Route::middleware([
     'auth:sanctum',
@@ -27,17 +37,14 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/blogs/index', [BlogController::class,'index'])->name('blog.index');
-    Route::get('/blogs/show/{blog}', [BlogController::class,'show'])->name('blog.show');
+    Route::get('/blogs/index', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blogs/show/{blog}', [BlogController::class, 'show'])->name('blog.show');
 
-    Route::get('/blogs/create', [BlogController::class,'create'])->name('blog.create');
-    Route::post('/blogs/create', [BlogController::class,'store'])->name('blog.store');
+    Route::get('/blogs/create', [BlogController::class, 'create'])->name('blog.create');
+    Route::post('/blogs/create', [BlogController::class, 'store'])->name('blog.store');
 
-    Route::get('/blogs/edit/{blog}', [BlogController::class,'edit'])->name('blog.edit');
-    Route::patch('/blogs/edit/{blog}', [BlogController::class,'update'])->name('blog.update');
+    Route::get('/blogs/edit/{blog}', [BlogController::class, 'edit'])->name('blog.edit');
+    Route::patch('/blogs/edit/{blog}', [BlogController::class, 'update'])->name('blog.update');
 
-    Route::delete('/blogs/delete/{blog}', [BlogController::class,'destroy'])->name('blog.delete');
-
-
-
+    Route::delete('/blogs/delete/{blog}', [BlogController::class, 'destroy'])->name('blog.delete');
 });
