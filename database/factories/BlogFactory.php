@@ -17,10 +17,16 @@ class BlogFactory extends Factory
      */
     public function definition()
     {
+        $para = $this->faker->paragraphs(10);
+        $content = "";
+        foreach($para as $p){
+            $content .= "<p>".$p."</p>";
+        }
         return [
-            'title' => $this->faker->sentence(20),
-            'content' => $this->faker->paragraph(3),
+            'title' => $this->faker->sentence(14),
+            'content' => $content,
             'created_by' => User::all()->random()->id,
+            'image' => 'noimg.png',
         ];
     }
 }

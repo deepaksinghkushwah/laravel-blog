@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,13 +16,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        /** Create roles and permissions, run this just once */
+        $adminRole = Role::create(['name' => 'admin']);
+        $permission = Permission::create(['name' => 'blog.edit']);
+
+        $adminRole->givePermissionTo($permission);
+
+        $writerRole = Role::create(['name' => 'writer']);
+        $writerRole->givePermissionTo($permission);
+
+
+        //\App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
 
-        \App\Models\Blog::factory(100)->create();
+        /** Create blogs */
+        //\App\Models\Blog::factory(500)->create();
     }
 }

@@ -25,7 +25,7 @@ Route::get('/', function (Request $request) {
         $where[] = ["title", 'like', '%' . $request->term . '%'];
     }
 
-    $blogs = DB::table("blogs")->where($where)->orderBy('id', 'DESC')->paginate(5);
+    $blogs = DB::table("blogs")->where($where)->orderBy('id', 'DESC')->paginate(50);
     return view('welcome',['blogs' =>$blogs]);
 })->name("welcome");
 
@@ -53,3 +53,11 @@ Route::middleware([
 Route::get('/blogs/detail/{blog}', function(Blog $blog){
     return view("blog-detail",['blog' => $blog]);
 })->name('blog.detail');
+
+Route::get("/manager/dashboard", function(){
+    return view("manager.dashboard");
+})->middleware('can:isAdmin,can:isManager')->name("manager.dashboard");
+
+Route::get("/admin/dashboard", function(){
+    return view("admin.dashboard");
+})->middleware('can:isAdmin')->name("admin.dashboard");

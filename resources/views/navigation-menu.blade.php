@@ -22,6 +22,18 @@
                     <x-jet-nav-link href="{{ route('blog.create') }}" :active="request()->routeIs('blog.create')">
                         {{ __('Blogs Create') }}
                     </x-jet-nav-link>
+
+                    @canany(["isManager","isAdmin"])
+                    <x-jet-nav-link href="{{ route('manager.dashboard') }}" :active="request()->routeIs('manager.dashboard')">
+                        {{ __('Manager Dashboard') }}
+                    </x-jet-nav-link>
+                    @endcanany
+
+                    @can("isAdmin")
+                    <x-jet-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
+                        {{ __('Admin Dashboard') }}
+                    </x-jet-nav-link>
+                    @endcan
                 </div>
             </div>
 
